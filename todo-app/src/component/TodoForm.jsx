@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const TodoForm = ({addTodoHandler,edit}) => {
-   const [todo, setTodo] = useState("");
+   const [todo, setTodo] = useState(edit ? edit.text : "");
+   const inputRef = useRef(null);
+   useEffect(() => {
+    inputRef.current.focus();
+   },[])
    
    const changeHandler = (e) => {
       setTodo(e.target.value)
@@ -14,7 +18,14 @@ const TodoForm = ({addTodoHandler,edit}) => {
 
     return ( 
         <form onSubmit={submitHandler} className="flex items-center flex-col md:flex-row py-6 mt-4 gap-3">
-            <input type="text" onChange={changeHandler} value={todo} className="px-5 py-2 rounded-md max-w-[300px] md:min-w-[300px] border-gray-400 border-2 outline-none" placeholder="Enter some todo"/>
+            <input 
+              type="text" 
+              onChange={changeHandler} 
+              value={todo} 
+              className="px-5 py-2 rounded-md max-w-[300px] md:min-w-[300px] border-gray-400 border-2" 
+              placeholder={edit ? "Update value...": "Enter todo..."}
+              ref={inputRef}
+              />
             <button type="submit" className="bg-sky-800 px-4 py-1 rounded text-white hover:bg-sky-900 transition">{edit ? "Update" : "Add"}</button>
         </form>
      );
